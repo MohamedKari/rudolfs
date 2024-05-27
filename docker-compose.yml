@@ -7,30 +7,43 @@ services:
     #  context: .
     #  dockerfile: Dockerfile
     ports:
-      - "8081:8080"
+      - "8080:8080"
     volumes:
       - data:/data
     restart: always
     environment:
-      - AWS_ACCESS_KEY_ID
-      - AWS_SECRET_ACCESS_KEY
-      - AWS_DEFAULT_REGION
       - LFS_ENCRYPTION_KEY
-      - LFS_S3_BUCKET
-      - LFS_MAX_CACHE_SIZE
     entrypoint:
       - /tini
       - --
       - /rudolfs
       - --cache-dir
-      - /data
+      - /cache
       - --key
       - ${LFS_ENCRYPTION_KEY}
-      - --max-cache-size
-      - ${LFS_MAX_CACHE_SIZE}
-      - s3
-      - --bucket
-      - ${LFS_S3_BUCKET}
+      - local
+      - --path
+      - /data
+    # environment:
+    #   - AWS_ACCESS_KEY_ID
+    #   - AWS_SECRET_ACCESS_KEY
+    #   - AWS_DEFAULT_REGION
+    #   - LFS_ENCRYPTION_KEY
+    #   - LFS_S3_BUCKET
+    #   - LFS_MAX_CACHE_SIZE
+    # entrypoint:
+    #   - /tini
+    #   - --
+    #   - /rudolfs
+    #   - --cache-dir
+    #   - /data
+    #   - --key
+    #   - ${LFS_ENCRYPTION_KEY}
+    #   - --max-cache-size
+    #   - ${LFS_MAX_CACHE_SIZE}
+    #   - s3
+    #   - --bucket
+    #   - ${LFS_S3_BUCKET}
 
   # A real production server should use nginx. How to configure this depends on
   # your needs. Use your Google-search skills to configure this correctly.
